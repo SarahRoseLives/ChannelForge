@@ -7,13 +7,16 @@
     <script type="text/brightscript" uri="UILogic/ContentTaskLogic.brs" />
     <script type="text/brightscript" uri="UILogic/GridScreenLogic.brs" />
     <children>
-         <!-- Overhang with Roku Developers logo -->
-         <Overhang
-            id="overhang"
-            showOptions="false"
-            showClock="false"
-            logoUri="pkg:/images/hd_overhang_logo.png"
-            translation="[0,60]"
+        <!-- Overhang with "Channel Forge" text instead of logo image -->
+        <Label
+            id="overhangLabel"
+            text="Channel Forge"
+            width="1280"
+            height="60"
+            translation="[130,60]"
+            horizAlign="left"
+            vertAlign="center"
+            font="font:LargeBoldSystemFont"
         />
         <!-- LoadingIndicator should be visible only in case of waiting for content -->
         <Label
