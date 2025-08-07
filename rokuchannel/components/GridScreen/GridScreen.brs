@@ -81,23 +81,38 @@ sub ShowVideoPlayer(url as String, streamFormat = "mp4" as String, title = "Vide
     videoContent.title = title
     m.videoPlayer.content = videoContent
     m.videoPlayer.control = "play"
+
+    ' Give focus to the video player so it receives remote control events
+    m.videoPlayer.SetFocus(true)
 end sub
 
 sub OnVideoPlayerStateChanged()
-    if m.videoPlayer.state = "done" or m.videoPlayer.state = "error"
-        m.top.removeChild(m.videoPlayer)
-        m.videoPlayer = invalid
+    if m.videoPlayer <> invalid
+        if m.videoPlayer.state = "done" or m.videoPlayer.state = "error"
+            m.top.removeChild(m.videoPlayer)
+            m.videoPlayer = invalid
+            ' Restore focus to the rowList so UI is responsive
+            if m.rowList <> invalid
+                m.rowList.SetFocus(true)
+            end if
+        end if
     end if
 end sub
 
+' Only handle the "back" key manually; let the Video node handle all others when video is playing.
 function onKeyEvent(key as String, press as Boolean) as Boolean
     if press
         if m.videoPlayer <> invalid
             if key = "back"
                 m.top.removeChild(m.videoPlayer)
                 m.videoPlayer = invalid
+                ' Restore focus to rowList after closing video
+                if m.rowList <> invalid
+                    m.rowList.SetFocus(true)
+                end if
                 return true
             end if
+            ' All other keys: allow Video node to process (since it has focus)
         else if key = "back"
             m.top.closeRequest = true
             return true
